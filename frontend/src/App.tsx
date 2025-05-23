@@ -1,7 +1,9 @@
+import { Button } from './components/ui/button';
+
 function App() {
 	return (
 		<>
-			<p className="text-2xl">Whereas </p>
+			<p className="font-semibold text-lg">Hello Word! </p>
 		</>
 	);
 }
