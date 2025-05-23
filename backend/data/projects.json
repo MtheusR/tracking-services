@@ -1,0 +1,14 @@
+[
+	{
+		"nome_do_projeto": "sd",
+		"descricao": "",
+		"subprojetos": [
+			{
+				"dominio": "",
+				"ip": "",
+				"porta": "",
+				"type": ""
+			}
+		]
+	}
+]
