@@ -5,7 +5,7 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				quicksand: ['Quicksand', 'sans-serif'],
+				quicksand: ['Space Grotesk', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -13,6 +13,14 @@ module.exports = {
 				sm: 'calc(var(--radius) - 4px)',
 			},
 			colors: {
+				'c-primary': {
+					1: '#d4ff2a',
+				},
+				'c-base': {
+					1: '#292929',
+					2: '#191919',
+					3: '#101010',
+				},
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {
