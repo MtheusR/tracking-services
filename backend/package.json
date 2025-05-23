@@ -1,0 +1,29 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"dev-back": "ts-node src/index.ts",
+		"build-back": "tsc",
+		"start-back": "node dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@types/cors": "^2.8.18",
+		"@types/express": "^4.17.22",
+		"@types/node": "^22.15.21",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"axios": "^1.9.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"express": "^4.21.2",
+		"ssl-checker": "^2.0.10",
+		"systeminformation": "^5.26.1"
+	}
+}

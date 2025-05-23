@@ -1,0 +1,11 @@
+{
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/ping": "^0.4.4",
+		"ping": "^0.4.4"
+	},
+	"scripts": {
+		"lint": "biome check .",
+		"format": "biome format . --write"
+	}
+}
