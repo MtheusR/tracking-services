@@ -9,9 +9,14 @@ router.get('/projetos', async (_req: Request, res: Response) => {
 		const filePath = path.join(__dirname, '../data/projects.json');
 		const data = await fs.readFile(filePath, 'utf-8');
 		const projetos = JSON.parse(data);
+
+		// ✅ LOG personalizado no terminal
+		console.log(`[GET /projetos] Requisição recebida em ${new Date().toLocaleString()}`);
+		console.log(`Total de projetos carregados: ${projetos.length}`);
+
 		res.json(projetos);
 	} catch (error) {
-		console.error('Erro ao ler o JSON:', error);
+		console.error('[GET /projetos] Erro ao ler o JSON:', error);
 		res.status(500).json({ error: 'Erro ao ler os projetos' });
 	}
 });

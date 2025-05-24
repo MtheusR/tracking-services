@@ -1,0 +1,14 @@
+[
+	{
+		"nome_do_projeto": "Longtech Site",
+		"descricao": "Site institucional da Longtech",
+		"subprojetos": [
+			{
+				"dominio": "https://longtech.com.br/",
+				"ip": "",
+				"porta": "",
+				"type": "front-end"
+			}
+		]
+	}
+]
