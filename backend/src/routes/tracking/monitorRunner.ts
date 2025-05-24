@@ -17,6 +17,8 @@ export async function startStatusMonitor() {
 
 	// ✅ Verifica SSL imediatamente
 	await verificarTipo('ssl');
+	await verificarTipo('http');
+	await verificarTipo('ping');
 
 	// 🔁 PING: a cada 30 segundos
 	cron.schedule('*/30 * * * * *', async () => {
@@ -24,13 +26,14 @@ export async function startStatusMonitor() {
 	});
 
 	// 🌐 HTTP: a cada 1 minuto
-	cron.schedule('* * * * *', async () => {
+	// cron.schedule('* * * * *', async () => {
+	cron.schedule('*/30 * * * * *', async () => {
 		await verificarTipo('http');
 	});
 
 	// 🔒 SSL: 1 vez por dia (meia-noite)
 	// cron.schedule('0 0 * * *', async () => {
-	cron.schedule('* * * * *', async () => {
+	cron.schedule('*/30 * * * * *', async () => {
 		await verificarTipo('ssl');
 	});
 }
@@ -49,7 +52,10 @@ async function verificarTipo(tipo: 'ping' | 'http' | 'ssl') {
 
 			statusMap.set(key, {
 				...statusAnterior,
-				[tipo]: resultado,
+				[tipo]: {
+					valor: resultado,
+					horario: new Date().toISOString(),
+				},
 			});
 
 			console.log(

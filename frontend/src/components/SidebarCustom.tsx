@@ -1,16 +1,15 @@
 // src/components/SidebarCustom.tsx
-import { useQuery } from '@tanstack/react-query';
 import { getProjetos } from '@/api/getProjetos';
-import { getStatus } from '@/api/getStatus';
+import { useQuery } from '@tanstack/react-query';
 import { CardProjetct } from './CardProject';
+import type { StatusDetalhado } from '@/api/getStatus';
 
-export function SidebarCustom() {
+interface SidebarCustomProps {
+	statusDetalhado: StatusDetalhado[];
+}
+
+export function SidebarCustom({ statusDetalhado }: SidebarCustomProps) {
 	const { data: projetos } = useQuery({ queryKey: ['projetos'], queryFn: getProjetos });
-	const { data: status } = useQuery({
-		queryKey: ['status'],
-		queryFn: getStatus,
-		refetchInterval: 10000,
-	});
 
 	return (
 		<aside className="w-96 bg-c-base-2 rounded-lg p-4 space-y-4">
@@ -18,14 +17,24 @@ export function SidebarCustom() {
 
 			{projetos?.map((projeto) =>
 				projeto.subprojetos.map((sub) => {
+					const statusDoSubprojeto = statusDetalhado.filter(
+						(st) => st.projeto === projeto.nome_do_projeto && st.dominio === sub.dominio,
+					);
+
+					const statusFormatado = {
+						ping: statusDoSubprojeto.find((s) => s.tipo === 'ping')?.resposta ?? undefined,
+						http: statusDoSubprojeto.find((s) => s.tipo === 'http')?.resposta ?? undefined,
+						ssl: statusDoSubprojeto.find((s) => s.tipo === 'ssl')?.resposta ?? undefined,
+						dns: statusDoSubprojeto.find((s) => s.tipo === 'dns')?.resposta ?? undefined,
+					};
+
 					const key = `${projeto.nome_do_projeto}-${sub.dominio}`;
-					const projectStatus = status?.[key];
 
 					return (
 						<CardProjetct
 							key={key}
 							nome_do_projeto={projeto.nome_do_projeto}
-							status={projectStatus}
+							status={statusFormatado}
 						/>
 					);
 				}),

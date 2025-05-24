@@ -1,10 +1,10 @@
 import { FolderCode } from 'lucide-react';
 
 interface Status {
-	http: boolean;
-	ping: boolean;
-	ssl: boolean;
-	dns: boolean;
+	http?: boolean;
+	ping?: boolean;
+	ssl?: boolean;
+	dns?: boolean;
 }
 
 interface CardProjetctProps {

@@ -1,7 +1,7 @@
 const stats = [
 	{ titulo: 'Projetos', cor: '' },
 	{ titulo: 'Ativos', cor: 'text-green-400' },
-	{ titulo: 'Parados', cor: 'text-red-500' },
+	{ titulo: 'Erros', cor: 'text-red-500' },
 	{ titulo: 'Alertas', cor: 'text-orange-400' },
 ];
 

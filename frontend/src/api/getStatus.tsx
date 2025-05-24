@@ -1,6 +1,14 @@
 import { api } from '@/lib/axios';
 
-export async function getStatus() {
+export interface StatusDetalhado {
+	resposta: boolean;
+	tipo: string;
+	projeto: string;
+	dominio: string;
+	horario: string;
+}
+
+export async function getStatusDetalhado(): Promise<StatusDetalhado[]> {
 	const response = await api.get('/monitor/status');
 	return response.data;
 }
