@@ -1,4 +1,4 @@
-import { NavigationComponent } from './pages/Navigation/NavigationComponent';
+import { NavigationComponent } from './components/NavigationComponent';
 import { SidebarCustom } from './components/SidebarCustom';
 import { QuickStats } from './components/QuickStats';
 import { EventsTable } from './components/EventsTable';
@@ -9,8 +9,7 @@ function App() {
 			<NavigationComponent />
 			<div className="flex flex-1 py-4 overflow-hidden">
 				<SidebarCustom />
-				<main className="flex-1 px-8 bg-c-base-3 py-4 space-y-4 overflow-auto">
-					<h1 className="text-xl font-semibold text-c-primary-1">Painel de Controle</h1>
+				<main className="flex-1 pl-4  bg-c-base-3 space-y-4 overflow-auto">
 					<div className="space-y-5 ">
 						<QuickStats />
 						<EventsTable />

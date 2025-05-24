@@ -8,8 +8,10 @@ const stats = [
 export const QuickStats = () => {
 	return (
 		<div className="space-y-3 bg-c-base-2 px-4 py-2 rounded-md">
-			<h2 className="text-lg">Totalizadores</h2>
-			<p className="text-lg">Informação geral dos projetos monitorados</p>
+			<div>
+				<h2 className="text-lg">Totalizadores</h2>
+				<p className="text-sm text-muted-foreground">Informação geral dos projetos monitorados</p>
+			</div>
 			<div className="grid grid-cols-4 py-2 ">
 				{stats.map((stat) => (
 					<div key={stat.titulo} className="p-4 text-center border-l first:border-l-0">

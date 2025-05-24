@@ -3,13 +3,13 @@
 	"files.exclude": {
 		".gitignore": true,
 		"**/eslint.config.js": true,
-		// "**/vite.config.ts": true,
+		"**/vite.config.ts": true,
 		"**/node_modules": true,
-		// "**/tsconfig.app.json": true,
-		// "**/tsconfig.json": true,
+		"**/tsconfig.app.json": true,
+		"**/tsconfig.json": true,
 		"**/tsconfig.node.json": true,
 		"**/package-lock.json": true,
-		// "**/postcss.config.js": true,
+		"**/postcss.config.js": true,
 		"**/README.md": true,
 		"**/vite-env.d.ts": true,
 		"components.json": true
