@@ -24,6 +24,7 @@
 		"cors": "^2.8.5",
 		"dotenv": "^16.5.0",
 		"express": "^4.21.2",
+		"node-cron": "^4.0.7",
 		"ping": "^0.4.4",
 		"ssl-checker": "^2.0.10",
 		"systeminformation": "^5.26.1"
