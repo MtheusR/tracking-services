@@ -23,7 +23,7 @@ export async function checkPing(ip: string): Promise<boolean> {
 
 export async function checkHttp(domain: string): Promise<boolean> {
 	try {
-		await axios.get(domain, { timeout: 3000 });
+		await axios.get(domain);
 		return true;
 	} catch {
 		return false;

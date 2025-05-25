@@ -12,7 +12,7 @@ export function SidebarCustom({ statusDetalhado }: SidebarCustomProps) {
 	const { data: projetos } = useQuery({ queryKey: ['projetos'], queryFn: getProjetos });
 
 	return (
-		<aside className="w-96 bg-c-base-2 rounded-lg p-4 space-y-4">
+		<aside className="w-[600px] bg-c-base-2 rounded-lg p-4 space-y-4">
 			<h2 className="text-sm text-muted-foreground border-b pb-3">Projetos monitorados</h2>
 
 			{projetos?.map((projeto) =>

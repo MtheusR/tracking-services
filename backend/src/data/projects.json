@@ -1,13 +1,13 @@
 [
 	{
-		"nome_do_projeto": "Longtech Site",
-		"descricao": "Site institucional da Longtech",
+		"nome_do_projeto": "Google",
+		"descricao": "Site Google",
 		"subprojetos": [
 			{
 				"dominio": "https://google.com.br/",
 				"ip": "",
 				"porta": "",
-				"type": "front-end"
+				"type": ""
 			}
 		]
 	}

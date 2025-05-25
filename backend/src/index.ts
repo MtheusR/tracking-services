@@ -27,7 +27,7 @@ app.use('/monitor', pingMonitor);
 app.use('/monitor', sslMonitor);
 app.use('/monitor', systemMonitor);
 app.use('/monitor', projectList);
-app.use('/monitor', statusMonitor); // 🟢 Adicionando nova rota de status
+app.use('/monitor', statusMonitor);
 
 startStatusMonitor(); // 🚀 Inicia o monitoramento automático
 

@@ -12,7 +12,7 @@ function App() {
 	const { data: statusDetalhado } = useQuery({
 		queryKey: ['status'],
 		queryFn: getStatusDetalhado,
-		refetchInterval: 10000, // atualiza a cada 10s
+		refetchInterval: 10, // atualiza a cada 10s
 		structuralSharing: false, // força re-render mesmo com dados iguais
 	});
 
@@ -37,7 +37,7 @@ function App() {
 			statusHistoricoRef.current = [...statusHistoricoRef.current, ...novos];
 
 			// Limita aos últimos 100 registros (opcional)
-			statusHistoricoRef.current = statusHistoricoRef.current.slice(-100);
+			statusHistoricoRef.current = statusHistoricoRef.current.slice(-40);
 
 			// ✅ Inverte para mostrar o mais recente primeiro
 			setHistorico([...statusHistoricoRef.current].reverse());

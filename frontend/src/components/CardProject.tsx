@@ -1,16 +1,24 @@
 import { FolderCode } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Status {
 	http?: boolean;
 	ping?: boolean;
 	ssl?: boolean;
-	dns?: boolean;
+	port?: boolean;
 }
 
 interface CardProjetctProps {
 	nome_do_projeto: string;
 	status?: Status;
 }
+
+const statusDescriptions: Record<keyof Status, string> = {
+	ping: 'Verifica se a VPS está ativa',
+	http: 'Verificar se o site/API está online',
+	ssl: 'Verifica a segurança SSL do domínio',
+	port: 'Verifica se a porta configurada está ativa',
+};
 
 export function CardProjetct({ nome_do_projeto, status }: CardProjetctProps) {
 	return (
@@ -20,15 +28,41 @@ export function CardProjetct({ nome_do_projeto, status }: CardProjetctProps) {
 					<FolderCode className="h-7 w-7" />
 					<p className="text-foreground">{nome_do_projeto}</p>
 				</div>
+
 				<div className="flex gap-2">
-					{['http', 'ping', 'ssl', 'dns'].map((key) => (
-						<div
-							key={key}
-							className={`h-3 w-3 rounded-full ${
-								status?.[key as keyof Status] ? 'bg-green-400' : 'bg-red-500'
-							}`}
-						/>
-					))}
+					<TooltipProvider>
+						{(['ping', 'http', 'ssl', 'port'] as (keyof Status)[]).map((key) => {
+							const value = status?.[key];
+							const colorClass =
+								value === undefined
+									? 'bg-gray-600 text-gray-400'
+									: value
+										? 'bg-green-400 text-green-900'
+										: 'bg-red-500 text-white';
+
+							return (
+								<Tooltip key={key}>
+									<TooltipTrigger asChild>
+										<div
+											className={`h-8 w-14 rounded-xl flex items-center justify-center font-bold ${colorClass}`}
+										>
+											<p className="text-xs">{key.toUpperCase()}</p>
+										</div>
+									</TooltipTrigger>
+									<TooltipContent className="bg-gray-700 text-white">
+										<p>
+											{statusDescriptions[key]}
+											{value === undefined
+												? ' (verificação ignorada)'
+												: value
+													? ' (OK)'
+													: ' (falhou)'}
+										</p>
+									</TooltipContent>
+								</Tooltip>
+							);
+						})}
+					</TooltipProvider>
 				</div>
 			</div>
 		</div>

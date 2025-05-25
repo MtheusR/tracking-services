@@ -31,34 +31,36 @@ export const TestesTable = ({ docs }: TestesTableProps) => {
 				</p>
 			</div>
 			<div className="border rounded-md">
-				<Table className="bg-c-base-2 rounded-md">
-					<TableHeader>
-						<TableRow>
-							<TableHead className="text-start w-[90px]">Resposta</TableHead>
-							<TableHead className="w-[100px] text-center">Tipo</TableHead>
-							<TableHead className="text-start ">Projeto</TableHead>
-							<TableHead className="w-[250px] text-center">Domínio/IP</TableHead>
-							<TableHead className="w-[170px] text-center">Data e Hora</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{docs.map((item) => (
-							<TableRow key={`${item.projeto}-${item.tipo}-${item.horario}`} className="text-sm">
-								<TableCell
-									className={
-										item.resposta ? 'font-medium text-green-600' : 'font-medium text-red-600'
-									}
-								>
-									{item.resposta ? '🟢 OK' : '🔴 Falhou'}
-								</TableCell>
-								<TableCell className="text-center">{item.tipo.toUpperCase()}</TableCell>
-								<TableCell>{item.projeto}</TableCell>
-								<TableCell className="text-center">{item.dominio}</TableCell>
-								<TableCell className="text-center">{item.horario}</TableCell>
+				<div className="max-h-[590px] overflow-y-auto">
+					<Table className="bg-c-base-2 rounded-md w-full">
+						<TableHeader>
+							<TableRow>
+								<TableHead className="text-start w-[90px]">Resposta</TableHead>
+								<TableHead className="w-[100px] text-center">Tipo</TableHead>
+								<TableHead className="text-start">Projeto</TableHead>
+								<TableHead className="w-[250px] text-center">Domínio/IP</TableHead>
+								<TableHead className="w-[170px] text-center">Data e Hora</TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+						</TableHeader>
+						<TableBody>
+							{docs.map((item) => (
+								<TableRow key={`${item.projeto}-${item.tipo}-${item.horario}`} className="text-sm">
+									<TableCell
+										className={`py-4 ${
+											item.resposta ? 'font-medium text-green-600' : 'font-medium text-red-600'
+										}`}
+									>
+										{item.resposta ? '🟢 OK' : '🔴 Falhou'}
+									</TableCell>
+									<TableCell className="py-4 text-center">{item.tipo.toUpperCase()}</TableCell>
+									<TableCell className="py-4">{item.projeto}</TableCell>
+									<TableCell className="py-4 text-center">{item.dominio}</TableCell>
+									<TableCell className="py-4 text-center">{item.horario}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
 		</div>
 	);
