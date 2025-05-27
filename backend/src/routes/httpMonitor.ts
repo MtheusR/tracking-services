@@ -1,5 +1,4 @@
-// biome-ignore lint/style/useImportType: <explanation>
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import axios from 'axios';
 
 const router = express.Router();

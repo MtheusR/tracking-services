@@ -10,8 +10,6 @@ router.get('/projetos', async (_req: Request, res: Response) => {
 		const data = await fs.readFile(filePath, 'utf-8');
 		const projetos = JSON.parse(data);
 
-		// ✅ LOG personalizado no terminal
-		console.log(`[GET /projetos] Requisição recebida em ${new Date().toLocaleString()}`);
 		console.log(`Total de projetos carregados: ${projetos.length}`);
 
 		res.json(projetos);

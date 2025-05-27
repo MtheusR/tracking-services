@@ -1,4 +1,3 @@
-// src/monitor/monitorRunner.ts
 import cron from 'node-cron';
 import { checkPing, checkHttp, checkSsl } from './statusChecker';
 import fs from 'node:fs/promises';
@@ -38,20 +37,18 @@ export async function startStatusMonitor() {
 	await verificarTipo('http');
 	await verificarTipo('ping');
 
-	// 🔁 PING: a cada 30 segundos
+	// PING: a cada 30 segundos
 	cron.schedule('*/10 * * * * *', async () => {
 		await verificarTipo('ping');
 	});
 
-	// 🌐 HTTP: a cada 1 minuto
-	// cron.schedule('* * * * *', async () => {
-	cron.schedule('*/10 * * * * *', async () => {
+	// HTTP: a cada 1 minuto
+	cron.schedule('* * * * *', async () => {
 		await verificarTipo('http');
 	});
 
-	// 🔒 SSL: 1 vez por dia (meia-noite)
-	// cron.schedule('0 0 * * *', async () => {
-	cron.schedule('*/10 * * * * *', async () => {
+	// SSL: 1 vez por dia (meia-noite)
+	cron.schedule('0 0 * * *', async () => {
 		await verificarTipo('ssl');
 	});
 }

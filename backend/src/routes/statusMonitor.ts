@@ -1,15 +1,7 @@
 import { Router } from 'express';
 import { statusMap } from './tracking/monitorRunner';
 
-// Tipos reutilizados do monitorRunner
 type StatusTipo = 'ping' | 'http' | 'ssl';
-
-interface StatusItem {
-	valor?: boolean;
-	horario?: string;
-}
-
-type StatusAtual = Partial<Record<StatusTipo, StatusItem>>;
 
 const router = Router();
 

@@ -29,7 +29,7 @@ app.use('/monitor', systemMonitor);
 app.use('/monitor', projectList);
 app.use('/monitor', statusMonitor);
 
-startStatusMonitor(); // 🚀 Inicia o monitoramento automático
+startStatusMonitor();
 
 app.listen(PORT, () => {
 	console.log(`✅ Server running on http://localhost:${PORT}`);

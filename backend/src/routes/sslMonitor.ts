@@ -19,7 +19,6 @@ router.get('/ssl', async (req: Request, res: Response) => {
 		});
 
 		return res.json({
-			// domain: sslInfo.domain,
 			valid: sslInfo.valid,
 			daysRemaining: sslInfo.daysRemaining,
 			validFrom: sslInfo.validFrom,

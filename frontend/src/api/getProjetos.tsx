@@ -1,6 +1,5 @@
 import { api } from '@/lib/axios';
 
-// src/types/projeto.ts
 export interface Subprojeto {
 	dominio: string;
 	ip: string;
