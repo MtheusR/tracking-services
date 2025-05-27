@@ -1,10 +1,27 @@
 import { Router } from 'express';
 import { statusMap } from './tracking/monitorRunner';
 
+// Tipos reutilizados do monitorRunner
+type StatusTipo = 'ping' | 'http' | 'ssl';
+
+interface StatusItem {
+	valor?: boolean;
+	horario?: string;
+}
+
+type StatusAtual = Partial<Record<StatusTipo, StatusItem>>;
+
 const router = Router();
 
 router.get('/status', (_req, res) => {
-	const lista: any[] = [];
+	const lista: {
+		projeto: string;
+		dominio: string;
+		tipo: StatusTipo;
+		resposta: boolean | undefined;
+		horario: string;
+	}[] = [];
+
 	const projetoResumo = new Map<string, { total: number; erros: number }>();
 
 	for (const [key, statusObj] of statusMap.entries()) {
@@ -13,11 +30,10 @@ router.get('/status', (_req, res) => {
 		let definidos = 0;
 		let erros = 0;
 
-		for (const tipo of Object.keys(statusObj)) {
+		for (const tipo of Object.keys(statusObj) as StatusTipo[]) {
 			const item = statusObj[tipo];
 			const valor = item?.valor;
 
-			// Só consideramos se o valor for definido
 			if (valor !== undefined) {
 				definidos++;
 				if (!valor) erros++;
@@ -36,7 +52,6 @@ router.get('/status', (_req, res) => {
 			projetoResumo.set(projeto, { total: 0, erros: 0 });
 		}
 
-		// Se tiver pelo menos um teste definido, atualiza
 		if (definidos > 0) {
 			// biome-ignore lint/style/noNonNullAssertion: <explanation>
 			const resumo = projetoResumo.get(projeto)!;

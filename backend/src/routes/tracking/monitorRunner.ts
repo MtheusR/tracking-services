@@ -4,9 +4,28 @@ import { checkPing, checkHttp, checkSsl } from './statusChecker';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-export const statusMap = new Map<string, any>();
+type StatusTipo = 'ping' | 'http' | 'ssl';
 
-let projetos: any[] = [];
+type StatusItem = {
+	valor: boolean | undefined;
+	horario: string;
+};
+
+type StatusAtual = Partial<Record<StatusTipo, StatusItem>>;
+
+export const statusMap = new Map<string, StatusAtual>();
+
+type Subprojeto = {
+	dominio: string;
+	ip?: string;
+};
+
+type Projeto = {
+	nome_do_projeto: string;
+	subprojetos: Subprojeto[];
+};
+
+let projetos: Projeto[] = [];
 
 export async function startStatusMonitor() {
 	const filePath = path.join(__dirname, '../../data/projects.json');
