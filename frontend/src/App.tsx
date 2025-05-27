@@ -1,7 +1,6 @@
-// src/App.tsx
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getStatusDetalhado, type StatusDetalhado } from '@/api/getStatus';
+import { getStatusDetalhado, type StatusItem, type StatusResponse } from '@/api/getStatus';
 
 import { NavigationComponent } from './components/NavigationComponent';
 import { SidebarCustom } from './components/SidebarCustom';
@@ -9,21 +8,22 @@ import { QuickStats } from './components/QuickStats';
 import { TestesTable } from './components/TestesTable';
 
 function App() {
-	const { data: statusDetalhado } = useQuery({
+	const { data } = useQuery<StatusResponse>({
 		queryKey: ['status'],
 		queryFn: getStatusDetalhado,
-		refetchInterval: 10, // atualiza a cada 10s
-		structuralSharing: false, // força re-render mesmo com dados iguais
+		refetchInterval: 10,
+		structuralSharing: false,
 	});
 
-	const statusHistoricoRef = useRef<StatusDetalhado[]>([]);
-	const [historico, setHistorico] = useState<StatusDetalhado[]>([]);
+	console.log('📡 Dados recebidos da API:', data);
+
+	const statusHistoricoRef = useRef<StatusItem[]>([]);
+	const [historico, setHistorico] = useState<StatusItem[]>([]);
 
 	useEffect(() => {
-		if (!statusDetalhado) return;
+		if (!data?.projetos) return;
 
-		// Filtra apenas registros novos (por horário)
-		const novos = statusDetalhado.filter((novo) => {
+		const novos = data.projetos.filter((novo) => {
 			return !statusHistoricoRef.current.some(
 				(existente) =>
 					existente.projeto === novo.projeto &&
@@ -35,23 +35,19 @@ function App() {
 
 		if (novos.length > 0) {
 			statusHistoricoRef.current = [...statusHistoricoRef.current, ...novos];
-
-			// Limita aos últimos 100 registros (opcional)
 			statusHistoricoRef.current = statusHistoricoRef.current.slice(-40);
-
-			// ✅ Inverte para mostrar o mais recente primeiro
 			setHistorico([...statusHistoricoRef.current].reverse());
 		}
-	}, [statusDetalhado]);
+	}, [data?.projetos]);
 
 	return (
 		<div className="h-screen flex flex-col bg-c-base-3 p-3 text-white">
 			<NavigationComponent />
 			<div className="flex flex-1 py-4 overflow-hidden">
-				<SidebarCustom statusDetalhado={statusDetalhado ?? []} />
+				<SidebarCustom statusDetalhado={data?.projetos ?? []} />
 				<main className="flex-1 pl-4 bg-c-base-3 space-y-4 overflow-auto">
 					<div className="space-y-5">
-						<QuickStats />
+						<QuickStats resumo={data?.resumo} />
 						<TestesTable docs={historico} />
 					</div>
 				</main>

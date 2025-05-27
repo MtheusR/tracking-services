@@ -1,25 +1,28 @@
-const stats = [
-	{ titulo: 'Projetos', cor: '' },
-	{ titulo: 'Ativos', cor: 'text-green-400' },
-	{ titulo: 'Erros', cor: 'text-red-500' },
-	{ titulo: 'Alertas', cor: 'text-orange-400' },
-];
+type QuickStatsProps = {
+	resumo?: {
+		totalProjetos: number;
+		totalOk: number;
+		totalComErro: number;
+	};
+};
 
-export const QuickStats = () => {
+export function QuickStats({ resumo }: QuickStatsProps) {
+	if (!resumo) return null;
+
 	return (
-		<div className="space-y-3 bg-c-base-2 px-4 py-2 rounded-md">
-			<div>
-				<h2 className="text-lg">Totalizadores</h2>
-				<p className="text-sm text-muted-foreground">Informação geral dos projetos monitorados</p>
+		<div className="grid grid-cols-3 gap-4 text-center">
+			<div className="bg-c-base-2 p-4 rounded-2xl shadow">
+				<h2 className="text-xl font-semibold">Total Projetos</h2>
+				<p className="text-3xl">{resumo.totalProjetos}</p>
 			</div>
-			<div className="grid grid-cols-4 py-2 ">
-				{stats.map((stat) => (
-					<div key={stat.titulo} className="p-4 text-center border-l first:border-l-0">
-						<p className={`text-2xl font-bold ${stat.cor}`}>0</p>
-						<p className="font-medium text-muted-foreground">{stat.titulo}</p>
-					</div>
-				))}
+			<div className="bg-green-700 p-4 rounded-2xl shadow">
+				<h2 className="text-xl font-semibold">OK</h2>
+				<p className="text-3xl">{resumo.totalOk}</p>
+			</div>
+			<div className="bg-red-700 p-4 rounded-2xl shadow">
+				<h2 className="text-xl font-semibold">Com Erros</h2>
+				<p className="text-3xl">{resumo.totalComErro}</p>
 			</div>
 		</div>
 	);
-};
+}
