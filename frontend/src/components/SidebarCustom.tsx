@@ -1,8 +1,7 @@
-// src/components/SidebarCustom.tsx
 import { getProjetos } from '@/api/getProjetos';
 import { useQuery } from '@tanstack/react-query';
 import { CardProjetct } from './CardProject';
-import type { StatusDetalhado } from '@/api/getStatus';
+import type StatusDetalhado from '@/api/getStatus';
 
 interface SidebarCustomProps {
 	statusDetalhado: StatusDetalhado[];
@@ -11,34 +10,54 @@ interface SidebarCustomProps {
 export function SidebarCustom({ statusDetalhado }: SidebarCustomProps) {
 	const { data: projetos } = useQuery({ queryKey: ['projetos'], queryFn: getProjetos });
 
+	function calcularStatusProjeto(projetoNome: string): {
+		ping?: boolean;
+		http?: boolean;
+		ssl?: boolean;
+		port?: boolean;
+	} {
+		const statusPorTipo: Record<'ping' | 'http' | 'ssl' | 'port', (boolean | undefined)[]> = {
+			ping: [],
+			http: [],
+			ssl: [],
+			port: [],
+		};
+
+		const subStatus = statusDetalhado.filter((s) => s.projeto === projetoNome);
+
+		for (const tipo of Object.keys(statusPorTipo) as (keyof typeof statusPorTipo)[]) {
+			statusPorTipo[tipo] = subStatus.filter((s) => s.tipo === tipo).map((s) => s.resposta);
+		}
+
+		const calcularCor = (arr: (boolean | undefined)[]): boolean | undefined => {
+			if (arr.every((v) => v === undefined)) return undefined;
+			if (arr.every((v) => v === true)) return true;
+			return false;
+		};
+
+		return {
+			ping: calcularCor(statusPorTipo.ping),
+			http: calcularCor(statusPorTipo.http),
+			ssl: calcularCor(statusPorTipo.ssl),
+			port: calcularCor(statusPorTipo.port),
+		};
+	}
+
 	return (
 		<aside className="w-[600px] bg-c-base-2 rounded-lg p-4 space-y-4">
 			<h2 className="text-sm text-muted-foreground border-b pb-3">Projetos monitorados</h2>
 
-			{projetos?.map((projeto) =>
-				projeto.subprojetos.map((sub) => {
-					const statusDoSubprojeto = statusDetalhado.filter(
-						(st) => st.projeto === projeto.nome_do_projeto && st.dominio === sub.dominio,
-					);
+			{projetos?.map((projeto) => {
+				const status = calcularStatusProjeto(projeto.nome_do_projeto);
 
-					const statusFormatado = {
-						ping: statusDoSubprojeto.find((s) => s.tipo === 'ping')?.resposta ?? undefined,
-						http: statusDoSubprojeto.find((s) => s.tipo === 'http')?.resposta ?? undefined,
-						ssl: statusDoSubprojeto.find((s) => s.tipo === 'ssl')?.resposta ?? undefined,
-						dns: statusDoSubprojeto.find((s) => s.tipo === 'dns')?.resposta ?? undefined,
-					};
-
-					const key = `${projeto.nome_do_projeto}-${sub.dominio}`;
-
-					return (
-						<CardProjetct
-							key={key}
-							nome_do_projeto={projeto.nome_do_projeto}
-							status={statusFormatado}
-						/>
-					);
-				}),
-			)}
+				return (
+					<CardProjetct
+						key={projeto.nome_do_projeto}
+						nome_do_projeto={projeto.nome_do_projeto}
+						status={status}
+					/>
+				);
+			})}
 		</aside>
 	);
 }

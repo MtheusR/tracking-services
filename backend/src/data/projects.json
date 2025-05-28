@@ -1,13 +1,31 @@
 [
 	{
-		"nome_do_projeto": "Google",
-		"descricao": "Site Google",
+		"nome_do_projeto": "Longchat RC",
+		"descricao": "Site institucional da Longtech",
 		"subprojetos": [
 			{
-				"dominio": "https://google.com.br/",
+				"dominio": "https://longchatrc.longtech.com.br/",
 				"ip": "",
 				"porta": "",
-				"type": ""
+				"type": "front-end"
+			},
+			{
+				"dominio": "https://backlongchatrc.longtech.com.br",
+				"ip": "157.173.106.105",
+				"porta": "",
+				"type": "back-end"
+			}
+		]
+	},
+	{
+		"nome_do_projeto": "Longtech Site",
+		"descricao": "Site institucional da Longtech",
+		"subprojetos": [
+			{
+				"dominio": "https://www.longtech.com.br/",
+				"ip": "",
+				"porta": "",
+				"type": "front-end"
 			}
 		]
 	}

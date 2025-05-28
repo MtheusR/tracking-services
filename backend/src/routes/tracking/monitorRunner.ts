@@ -1,9 +1,9 @@
 import cron from 'node-cron';
-import { checkPing, checkHttp, checkSsl } from './statusChecker';
+import { checkPing, checkHttp, checkSsl, checkDns } from './statusChecker';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-type StatusTipo = 'ping' | 'http' | 'ssl';
+type StatusTipo = 'ping' | 'http' | 'ssl' | 'dns';
 
 type StatusItem = {
 	valor: boolean | undefined;
@@ -33,11 +33,12 @@ export async function startStatusMonitor() {
 
 	console.log('✅ Projetos carregados:', projetos.length);
 
+	await verificarTipo('dns');
 	await verificarTipo('ssl');
 	await verificarTipo('http');
 	await verificarTipo('ping');
 
-	// PING: a cada 30 segundos
+	// PING: a cada 10 segundos
 	cron.schedule('*/10 * * * * *', async () => {
 		await verificarTipo('ping');
 	});
@@ -51,9 +52,14 @@ export async function startStatusMonitor() {
 	cron.schedule('0 0 * * *', async () => {
 		await verificarTipo('ssl');
 	});
+
+	// DNS: 1 vez por hora
+	cron.schedule('0 * * * *', async () => {
+		await verificarTipo('dns');
+	});
 }
 
-async function verificarTipo(tipo: 'ping' | 'http' | 'ssl') {
+async function verificarTipo(tipo: StatusTipo) {
 	for (const projeto of projetos) {
 		for (const sub of projeto.subprojetos) {
 			const key = `${projeto.nome_do_projeto}-${sub.dominio}`;
@@ -61,21 +67,39 @@ async function verificarTipo(tipo: 'ping' | 'http' | 'ssl') {
 
 			let resultado: boolean | undefined;
 
-			if (tipo === 'ping' && sub.ip) resultado = await checkPing(sub.ip);
-			if (tipo === 'http' && sub.dominio) resultado = await checkHttp(sub.dominio);
-			if (tipo === 'ssl' && sub.dominio) resultado = await checkSsl(sub.dominio);
+			if (tipo === 'ping') {
+				if (!sub.ip) continue; // ignora se não tem IP
+				resultado = await checkPing(sub.ip);
+			}
 
-			statusMap.set(key, {
-				...statusAnterior,
-				[tipo]: {
-					valor: resultado,
-					horario: new Date().toISOString(),
-				},
-			});
+			if (tipo === 'http') {
+				if (!sub.dominio) continue; // ignora se não tem domínio
+				resultado = await checkHttp(sub.dominio);
+			}
 
-			console.log(
-				`[${tipo.toUpperCase()}] ${projeto.nome_do_projeto} (${sub.dominio}) => ${resultado ? '✅ OK' : '❌ FAIL'}`,
-			);
+			if (tipo === 'ssl') {
+				if (!sub.dominio) continue; // ignora se não tem domínio
+				resultado = await checkSsl(sub.dominio);
+			}
+
+			// if (tipo === 'port') {
+			// 	if (!sub.dominio) continue; // ignora se não tem domínio
+			// 	resultado = await checkDns(sub.dominio);
+			// }
+
+			if (resultado !== undefined) {
+				statusMap.set(key, {
+					...statusAnterior,
+					[tipo]: {
+						valor: resultado,
+						horario: new Date().toISOString(),
+					},
+				});
+
+				console.log(
+					`[${tipo.toUpperCase()}] ${projeto.nome_do_projeto} (${sub.dominio}) => ${resultado ? '✅ OK' : '❌ FAIL'}`,
+				);
+			}
 		}
 	}
 }
